@@ -82,3 +82,4 @@ cython_debug/
 pyvenv.cfg
 pip-selfcheck.json
 .idea/
+static

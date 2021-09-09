@@ -11,6 +11,7 @@ services:
       - .env.backend.dev
     depends_on:
       - backend_db
+      - cache
   backend_db:
     image: postgres:13-alpine
     volumes:
@@ -19,5 +20,9 @@ services:
       - "50001:5432"
     env_file:
       - .env.db.dev
+  cache:
+    image: memcached:latest
+    command:
+      - '--memory-limit=1024'
 volumes:
   backend_postgres_data:

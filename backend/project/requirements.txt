@@ -3,3 +3,9 @@ djangorestframework
 markdown
 django-filter
 psycopg2-binary
+django-mptt
+
+drf-yasg
+pymemcache
+django-debug-toolbar
+
