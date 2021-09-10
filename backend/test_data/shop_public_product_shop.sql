@@ -1,0 +1,5 @@
+INSERT INTO public.product_shop (id, created, modified, name) VALUES (1, '2021-09-10 15:34:29.414374 +00:00', '2021-09-10 15:34:29.414391 +00:00', 'Магазин 1');
+INSERT INTO public.product_shop (id, created, modified, name) VALUES (2, '2021-09-10 15:34:32.625444 +00:00', '2021-09-10 15:34:32.625460 +00:00', 'Магазин 2');
+INSERT INTO public.product_shop (id, created, modified, name) VALUES (3, '2021-09-10 15:34:35.241656 +00:00', '2021-09-10 15:34:35.241672 +00:00', 'Магазин 3');
+INSERT INTO public.product_shop (id, created, modified, name) VALUES (4, '2021-09-10 15:34:37.385343 +00:00', '2021-09-10 15:34:37.385359 +00:00', 'Магазин 4');
+INSERT INTO public.product_shop (id, created, modified, name) VALUES (5, '2021-09-10 15:34:39.616669 +00:00', '2021-09-10 15:34:39.616685 +00:00', 'Магазин 5');

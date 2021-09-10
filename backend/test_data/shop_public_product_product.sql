@@ -1,0 +1,4 @@
+INSERT INTO public.product_product (id, created, modified, name, category_id) VALUES (1, '2021-09-10 15:28:43.200386 +00:00', '2021-09-10 15:28:43.200403 +00:00', 'Йогурт питьевой Агуша 2,7% клубника/банан', 16);
+INSERT INTO public.product_product (id, created, modified, name, category_id) VALUES (2, '2021-09-10 15:28:54.459251 +00:00', '2021-09-10 15:28:54.459268 +00:00', 'Йогуртный продукт Фруттис Кидс 2% персик/витамин', 16);
+INSERT INTO public.product_product (id, created, modified, name, category_id) VALUES (3, '2021-09-10 15:29:07.308526 +00:00', '2021-09-10 15:29:07.308542 +00:00', 'Йогурт Bio Culture kids 1,3% клубника/банан', 16);
+INSERT INTO public.product_product (id, created, modified, name, category_id) VALUES (4, '2021-09-10 15:30:21.136269 +00:00', '2021-09-10 15:30:53.809291 +00:00', 'Пирожное бисквитное Nesquik молочная начинка 26г', 17);
