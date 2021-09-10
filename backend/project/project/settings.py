@@ -28,7 +28,7 @@ DEBUG = int(os.getenv("DEBUG", default=1))
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(" ")
 
 INTERNAL_IPS = [
-        "127.0.0.1", "192.168.33.11", "191.168.56.1", "192.168.33.1"
+        "127.0.0.1",
 ]
 
 # чтоб работал dubug_toolbar через docker
@@ -163,7 +163,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Django REST framework
 
-API_ITEMS_PER_PAGE = 10
+API_ITEMS_PER_PAGE = 1
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -171,7 +171,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.IsAdminUser'
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': API_ITEMS_PER_PAGE,

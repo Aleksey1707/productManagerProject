@@ -9,10 +9,10 @@ class CategoryListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'name', 'created', 'modified', 'child_categories')
+        fields = ('id', 'name', 'created', 'modified', 'children')
 
 
-CategoryListSerializer._declared_fields['child_categories'] = CategoryListSerializer(
+CategoryListSerializer._declared_fields['children'] = CategoryListSerializer(
     many=True,
     source='get_children',
 )
@@ -22,4 +22,4 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = '__all__'
+        exclude = ('lft', 'rght', 'tree_id', )

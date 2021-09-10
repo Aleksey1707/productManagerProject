@@ -1,6 +1,3 @@
-import decimal
-
-import mptt.querysets
 from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
 from mptt.fields import TreeForeignKey
@@ -17,38 +14,16 @@ class TimedModel(models.Model):
         abstract = True
 
 
-class CategoryQuerySet(mptt.querysets.TreeQuerySet):
-    def head(self):
-        """Головные категории"""
-        return self.filter(parent_category__isnull=True)
-
-
-class CategoryManager(mptt.models.TreeManager):
-    def get_queryset(self):
-        return CategoryQuerySet(self.model, using=self._db)
-
-    def head(self):
-        """Головные категории"""
-        return self.get_queryset().head()
-
-
 class Category(TimedModel, MPTTModel):
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
-        ordering = ["created"]
-
-    class MPTTMeta:
-        order_insertion_by = ["name"]
-        parent_attr = "parent_category"
-
-    objects = CategoryManager()
 
     name = models.CharField(verbose_name="Наименование", max_length=255, unique=True,
                             validators=[MinLengthValidator(1, "Наименование категории не может быть пустым")])
 
-    parent_category = TreeForeignKey("self", verbose_name="Родительская категория", on_delete=models.CASCADE,
-                                     related_name='child_categories', null=True)
+    parent = TreeForeignKey("self", verbose_name="Родительская категория", on_delete=models.CASCADE,
+                            related_name='children', null=True, db_index=True)
 
     def __str__(self):
         return self.name
@@ -98,7 +73,8 @@ class ProductState(TimedModel):
                                    validators=[MinValueValidator(0, "Количество товара не может быть ниже нуля")])
 
     price = models.DecimalField(verbose_name="Цена", max_digits=10, decimal_places=2,
-                                validators=[MinValueValidator(RubMoney.get_min_value(), "Цена не может быть меньше 0.01 рубля")])
+                                validators=[MinValueValidator(RubMoney.get_min_value(),
+                                                              "Цена не может быть меньше 0.01 рубля")])
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
