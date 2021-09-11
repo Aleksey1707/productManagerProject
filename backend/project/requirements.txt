@@ -4,8 +4,10 @@ markdown
 django-filter
 psycopg2-binary
 django-mptt
+PyJWT
 
 drf-yasg
 pymemcache
+
 django-debug-toolbar
 

@@ -22,13 +22,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
 
+
     # API Auth
     path('api-auth/', include('rest_framework.urls')),
-    # path('api/auth/', include('djoser.urls')),
-    # path('auth/', include('djoser.urls.authtoken')),
-    # path('api/auth/', include('djoser.urls.jwt')),
 
     # application urls
+    path('api/', include('accounts.urls')),
     path('api/', include('product.urls')),
 
 ]
