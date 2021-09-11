@@ -21,7 +21,7 @@ services:
     env_file:
       - .env.db.dev
   cache:
-    image: memcached:latest
+    image: memcached:alpine
     command:
       - '--memory-limit=1024'
 volumes:

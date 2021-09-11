@@ -20,6 +20,7 @@ class Category(TimedModel, MPTTModel):
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
+        ordering = ['id']
 
     name = models.CharField(verbose_name="Наименование", max_length=255, unique=True,
                             validators=[MinLengthValidator(1, "Наименование категории не может быть пустым")])
@@ -39,6 +40,7 @@ class Product(TimedModel):
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
         default_related_name = "products"
+        ordering = ['id']
 
     name = models.CharField(verbose_name="Наименование", max_length=255,
                             validators=[MinLengthValidator(1, "Наименование продукта не может быть пустым")])
@@ -63,6 +65,7 @@ class Shop(TimedModel):
         verbose_name = "Магазин"
         verbose_name_plural = "Магазины"
         default_related_name = "shops"
+        ordering = ['id']
 
     name = models.CharField(verbose_name="Наименование", max_length=255,
                             validators=[MinLengthValidator(1, "Наименование магазина не может быть пустым")])
@@ -76,6 +79,8 @@ class ProductState(TimedModel):
         verbose_name = "Статус товара"
         verbose_name_plural = "Статус товаров"
         default_related_name = "product_states"
+        ordering = ['id']
+        unique_together = ('product', 'shop')
 
     quantity = models.IntegerField(verbose_name="Количество",
                                    validators=[MinValueValidator(0, "Количество товара не может быть ниже нуля")])
@@ -84,8 +89,8 @@ class ProductState(TimedModel):
                                 validators=[MinValueValidator(RubMoney.get_min_value(),
                                                               "Цена не может быть меньше 0.01 рубля")])
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар")
-    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, verbose_name="Магазин")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар", related_name="product_states")
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, verbose_name="Магазин", related_name="product_states_shop")
 
     def __str__(self):
         return f"Кол-во: {self.quantity}, цена {self.price}"

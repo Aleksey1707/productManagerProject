@@ -33,7 +33,7 @@ INTERNAL_IPS = [
         "127.0.0.1",
 ]
 
-# чтоб работал dubug_toolbar через docker
+# чтоб работал debug_toolbar через docker
 if DEBUG:
     import socket
     ip = socket.gethostbyname(socket.gethostname())
@@ -115,6 +115,11 @@ CACHES = {
     }
 }
 
+if DEBUG:
+    CACHES['default'] = {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -173,6 +178,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': API_ITEMS_PER_PAGE,
 }

@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.test import TestCase
 
 from django.core.exceptions import ValidationError
@@ -8,7 +9,7 @@ from utils.money import RubMoney
 
 class TestCategory(TestCase):
 
-    def test_name(self):
+    def test_name_min_length(self):
         category = Category()
         self.assertRaises(ValidationError, category.full_clean)
 
@@ -16,16 +17,26 @@ class TestCategory(TestCase):
         category.name = name
         self.assertEqual(category.name, name)
 
+    def test_name_unique(self):
+        Category.objects.create(name="category 1")
+        with self.assertRaises(IntegrityError):
+            Category.objects.create(name="category 1")
+
 
 class TestProduct(TestCase):
 
-    def test_name(self):
+    def test_name_min_length(self):
         product = Product()
         self.assertRaises(ValidationError, product.full_clean)
 
         name = "product 1"
         product.name = name
         self.assertEqual(product.name, name)
+
+    def test_category(self):
+        product = Product(name='product 1')
+
+        self.assertRaises(ValidationError, product.full_clean)
 
 
 class TestShop(TestCase):
