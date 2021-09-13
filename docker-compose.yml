@@ -1,7 +1,10 @@
 version: '3.9'
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+    container_name: productmanagerproject_backend_dev
     command: "python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./backend/project/:/usr/src/project/
@@ -11,18 +14,26 @@ services:
       - .env.backend.dev
     depends_on:
       - backend_db
-      - cache
   backend_db:
     image: postgres:13-alpine
+    container_name: productmanagerproject_backend_db_dev
     volumes:
       - backend_postgres_data:/var/lib/postgresql/data/
     ports:
       - "50001:5432"
     env_file:
       - .env.db.dev
-  cache:
-    image: memcached:alpine
-    command:
-      - '--memory-limit=1024'
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    container_name: productmanagerproject_frontend_dev
+    command: "npm run serve"
+    volumes:
+      - ./frontend/project/:/usr/src/project/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
 volumes:
   backend_postgres_data:

@@ -10,7 +10,6 @@ class TestAccountsApi(APITestCase):
         url = reverse('user_registration')
 
         data = dict(
-            email="test@test.ru",
             username="test",
             password="test_password"
         )
@@ -22,14 +21,11 @@ class TestAccountsApi(APITestCase):
         url = reverse('user_login')
 
         data = dict(
-            email="test@test.ru",
             username="test",
             password="test_password"
         )
 
         User.objects.create_user(**data)
-
-        del data['username']
 
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
