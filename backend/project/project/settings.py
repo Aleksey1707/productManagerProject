@@ -17,7 +17,6 @@ import rest_framework.permissions
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -25,17 +24,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.getenv("DEBUG", default=1))
+DEBUG = int(os.getenv("DEBUG", default=0))
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(" ")
 
 INTERNAL_IPS = [
-        "127.0.0.1",
+    "127.0.0.1",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8080',
 ]
 
 # чтоб работал debug_toolbar через docker
 if DEBUG:
     import socket
+
     ip = socket.gethostbyname(socket.gethostname())
     INTERNAL_IPS += [ip[:-1] + '1']
 
@@ -43,7 +47,6 @@ if DEBUG:
 
 INSTALLED_APPS = [
     'accounts',
-
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,6 +63,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'drf_yasg',
+    'corsheaders',
 
     'product',
 ]
@@ -73,6 +77,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -95,7 +101,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -110,7 +115,6 @@ DATABASES = {
     }
 }
 
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
@@ -122,7 +126,6 @@ if DEBUG:
     CACHES['default'] = {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -142,14 +145,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 AUTH_USER_MODEL = 'accounts.User'
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -158,7 +159,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -176,21 +176,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Django REST framework
 
-API_ITEMS_PER_PAGE = 10
+# Убрал пагинацию...
+# API_ITEMS_PER_PAGE = 10
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         'accounts.backends.JWTAuthentication',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
     ],
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': API_ITEMS_PER_PAGE,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': API_ITEMS_PER_PAGE,
 }
-
-# if DEBUG:
-#     REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = ['rest_framework.permissions.AllowAny']
 
 # APPLICATION SETTINGS
 

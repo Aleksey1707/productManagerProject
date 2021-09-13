@@ -5,9 +5,12 @@ django-filter
 psycopg2-binary
 django-mptt
 PyJWT
+django-cors-headers
 
 drf-yasg
 pymemcache
 
 django-debug-toolbar
+
+gunicorn
 

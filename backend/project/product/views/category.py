@@ -14,6 +14,7 @@ CACHE_PAGE_SECONDS = 60
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    filterset_fields = ('id',)
 
     @method_decorator(cache_page(CACHE_PAGE_SECONDS))
     def list(self, request, *args, **kwargs):
@@ -22,7 +23,10 @@ class CategoryViewSet(ModelViewSet):
         #  Поэтому если реализовывать по правильному метод `get_serializer_class`,
         #  то drf-yasg подцепляет сериализатор и падает
         #  Поэтому пришлось указать этот сериализатор прямо в этой функции, чтоб dfr-yasg до него не добрался
-        queryset = Category.objects.get_cached_trees()
+        if request.query_params:
+            queryset = self.filter_queryset(self.get_queryset())
+        else:
+            queryset = Category.objects.get_cached_trees()
 
         page = self.paginate_queryset(queryset)
         if page is not None:

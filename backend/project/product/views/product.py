@@ -8,9 +8,13 @@ from product.serializers.product import ProductSerializer, ProductListSerializer
 CACHE_PAGE_SECONDS = 30
 
 
+# ToDo Реализовать фильтрацию по category_id
+
+
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.prefetch_related("product_states__shop").all()
     serializer_class = ProductSerializer
+    filterset_fields = ('category_id',)
 
     def get_serializer_class(self):
         if self.action == "list":
