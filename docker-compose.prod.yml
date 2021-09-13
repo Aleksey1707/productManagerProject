@@ -1,0 +1,63 @@
+#Я знаю, что это не совсем production ready конфиг,
+#но запустить, чтоб посмотреть, что все работает можно
+
+version: '3.9'
+services:
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile.prod
+    container_name: productmanagerproject_backend
+    expose:
+      - "8000"
+    volumes:
+      - django_static:/usr/src/project/static
+    env_file:
+      - .env.backend.prod
+    depends_on:
+      - backend_db
+      - cache
+
+  nginx:
+    build:
+      context: ./backend/nginx
+      dockerfile: ./Dockerfile.prod
+    container_name: productmanagerproject_nginx
+    ports:
+      - "8080:8080"
+    volumes:
+      - django_static:/usr/src/project/static
+    depends_on:
+      - backend
+
+
+  backend_db:
+    image: postgres:13-alpine
+    container_name: productmanagerproject_backend_db
+    expose:
+      - "5432"
+    volumes:
+      - backend_postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env.db.prod
+
+  cache:
+    image: memcached:alpine
+    container_name: productmanagerproject_backend_cache
+    command:
+      - '--memory-limit=64'
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile.prod
+    container_name: productmanagerproject_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  django_static:
+  backend_postgres_data:
