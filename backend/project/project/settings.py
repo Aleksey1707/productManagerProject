@@ -57,8 +57,6 @@ INSTALLED_APPS = [
 
     'mptt',
 
-    'debug_toolbar',
-
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
@@ -68,6 +66,11 @@ INSTALLED_APPS = [
     'product',
 ]
 
+if DEBUG:
+    INSTALLED_APPS.extend([
+        'debug_toolbar',
+    ])
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -76,10 +79,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
 ]
+
+if DEBUG:
+    MIDDLEWARE.extend([
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ])
 
 ROOT_URLCONF = 'project.urls'
 
@@ -150,7 +157,7 @@ AUTH_USER_MODEL = 'accounts.User'
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'UTC'
 

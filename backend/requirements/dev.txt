@@ -1,0 +1,10 @@
+django
+djangorestframework
+markdown
+django-filter
+psycopg2-binary
+django-mptt
+PyJWT
+django-cors-headers
+drf-yasg
+django-debug-toolbar

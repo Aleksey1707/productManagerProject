@@ -1,5 +1,6 @@
 version: '3.9'
 services:
+
   backend:
     build:
       context: ./backend
@@ -11,9 +12,10 @@ services:
     ports:
       - "8000:8000"
     env_file:
-      - .env.backend.dev
+      - .env_public/dev/.env.backend
     depends_on:
       - backend_db
+
   backend_db:
     image: postgres:13-alpine
     container_name: productmanagerproject_backend_db_dev
@@ -22,7 +24,8 @@ services:
     ports:
       - "50001:5432"
     env_file:
-      - .env.db.dev
+      - .env_public/dev/.env.db
+
   frontend:
     build:
       context: ./frontend
@@ -35,5 +38,6 @@ services:
       - "8080:8080"
     depends_on:
       - backend
+
 volumes:
   backend_postgres_data:

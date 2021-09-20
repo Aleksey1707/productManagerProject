@@ -14,7 +14,7 @@ services:
     volumes:
       - django_static:/usr/src/project/static
     env_file:
-      - .env.backend.prod
+      - .env_public/prod/.env.backend
     depends_on:
       - backend_db
       - cache
@@ -23,7 +23,7 @@ services:
     build:
       context: ./backend/nginx
       dockerfile: ./Dockerfile.prod
-    container_name: productmanagerproject_nginx
+    container_name: productmanagerproject_backend_nginx
     ports:
       - "8080:8080"
     volumes:
@@ -40,7 +40,7 @@ services:
     volumes:
       - backend_postgres_data:/var/lib/postgresql/data/
     env_file:
-      - .env.db.prod
+      - .env_public/prod/.env.db
 
   cache:
     image: memcached:alpine
